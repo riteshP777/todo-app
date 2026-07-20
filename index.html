@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Todo | Premium Task Manager</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons for high quality visuals -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Link styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background glow elements for aesthetic depth -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="logo-wrapper">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-square-check"></i>
+                    </div>
+                    <div>
+                        <h1>AURA</h1>
+                        <p class="subtitle">Focus on what matters</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="date-display" id="current-date">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span id="date-text">Saturday, June 13</span>
+                </div>
+                
+                <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle Night Mode">
+                    <span class="sun-icon"><i class="fa-solid fa-sun"></i></span>
+                    <span class="moon-icon"><i class="fa-solid fa-moon"></i></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- DASHBOARD STATS -->
+        <section class="dashboard-section card">
+            <div class="stats-grid">
+                <div class="stat-progress-wrapper">
+                    <div class="progress-circle" id="progress-circle">
+                        <svg class="progress-ring" width="80" height="80">
+                            <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.05)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+                            <circle class="progress-ring__circle" id="progress-ring-circle" stroke="url(#progressGradient)" stroke-width="6" stroke-linecap="round" fill="transparent" r="34" cx="40" cy="40"/>
+                            <defs>
+                                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#8b5cf6" />
+                                    <stop offset="100%" stop-color="#ec4899" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="progress-text">
+                            <span id="progress-percent">0%</span>
+                        </div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Your Progress</h3>
+                        <p id="progress-comment">Ready to crush some goals?</p>
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-icon pending-icon">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div class="stat-data">
+                        <span class="stat-num" id="pending-count">0</span>
+                        <span class="stat-label">Pending Tasks</span>
+                    </div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-icon completed-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="stat-data">
+                        <span class="stat-num" id="completed-count">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-icon efficiency-icon">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="stat-data">
+                        <span class="stat-num" id="starred-count">0</span>
+                        <span class="stat-label">Starred Tasks</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN APP CONTENT -->
+        <main class="main-content">
+            <!-- TASK CREATOR -->
+            <section class="task-creator-section card">
+                <form id="todo-form">
+                    <div class="input-group">
+                        <input type="text" id="todo-input" placeholder="What needs to be done today?" required autocomplete="off">
+                        <button type="submit" class="btn-primary" id="add-btn">
+                            <span>Add Task</span>
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="form-advanced-options">
+                        <!-- Category Picker -->
+                        <div class="option-field">
+                            <label><i class="fa-solid fa-tags"></i> Category</label>
+                            <div class="category-pills" id="category-pills">
+                                <button type="button" class="pill active" data-category="personal" style="--pill-color: var(--color-purple)">
+                                    <span class="pill-dot"></span>Personal
+                                </button>
+                                <button type="button" class="pill" data-category="work" style="--pill-color: var(--color-blue)">
+                                    <span class="pill-dot"></span>Work
+                                </button>
+                                <button type="button" class="pill" data-category="shopping" style="--pill-color: var(--color-pink)">
+                                    <span class="pill-dot"></span>Shopping
+                                </button>
+                                <button type="button" class="pill" data-category="fitness" style="--pill-color: var(--color-green)">
+                                    <span class="pill-dot"></span>Fitness
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="option-row">
+                            <!-- Priority Picker -->
+                            <div class="option-field">
+                                <label><i class="fa-solid fa-triangle-exclamation"></i> Priority</label>
+                                <div class="priority-select-wrapper">
+                                    <select id="priority-select" class="custom-select">
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                    <div class="select-arrow"><i class="fa-solid fa-chevron-down"></i></div>
+                                </div>
+                            </div>
+
+                            <!-- Due Date Picker -->
+                            <div class="option-field">
+                                <label><i class="fa-solid fa-clock"></i> Due Date</label>
+                                <div class="date-input-wrapper">
+                                    <input type="datetime-local" id="due-date-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- CONTROLS & FILTERING -->
+            <section class="controls-section card">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search tasks...">
+                    <button type="button" id="clear-search-btn" class="clear-search-btn hidden"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="filters-row">
+                    <div class="filter-tabs">
+                        <button type="button" class="filter-tab active" data-filter="all">All</button>
+                        <button type="button" class="filter-tab" data-filter="pending">Pending</button>
+                        <button type="button" class="filter-tab" data-filter="completed">Completed</button>
+                        <button type="button" class="filter-tab" data-filter="starred">Starred</button>
+                    </div>
+
+                    <div class="sort-wrapper">
+                        <label for="sort-select"><i class="fa-solid fa-arrow-down-wide-narrow"></i> Sort</label>
+                        <div class="select-wrapper">
+                            <select id="sort-select" class="custom-select-sm">
+                                <option value="date-created-desc">Newest First</option>
+                                <option value="date-created-asc">Oldest First</option>
+                                <option value="due-date-asc">Due Soonest</option>
+                                <option value="priority-desc">Priority: High to Low</option>
+                            </select>
+                            <div class="select-arrow"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TODO LIST -->
+            <section class="todo-list-container">
+                <div id="todo-list" class="todo-list">
+                    <!-- Tasks will be rendered here dynamically -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state hidden">
+                    <div class="empty-illustration">
+                        <div class="circle-glow"></div>
+                        <i class="fa-regular fa-clipboard floating-clipboard"></i>
+                    </div>
+                    <h2>No tasks found</h2>
+                    <p>Add some tasks above or change your filters to get started!</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>© 2026 Aura Todo. Built with ❤️ and modern UI principles.</p>
+            <div class="footer-links">
+                <button type="button" id="clear-all-btn" class="text-btn danger"><i class="fa-regular fa-trash-can"></i> Clear Completed</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- EDIT TASK MODAL (hidden by default) -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-pen-to-square"></i> Edit Task</h2>
+                <button type="button" class="close-modal-btn" id="close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="edit-form">
+                <input type="hidden" id="edit-todo-id">
+                
+                <div class="form-field">
+                    <label for="edit-title">Task Title</label>
+                    <input type="text" id="edit-title" required autocomplete="off">
+                </div>
+
+                <div class="form-field">
+                    <label>Category</label>
+                    <div class="modal-category-pills" id="modal-category-pills">
+                        <!-- Dynamic categories will be generated here -->
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="edit-priority">Priority</label>
+                        <div class="priority-select-wrapper">
+                            <select id="edit-priority" class="custom-select">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                            <div class="select-arrow"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="edit-due-date">Due Date</label>
+                        <div class="date-input-wrapper">
+                            <input type="datetime-local" id="edit-due-date">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancel-edit-btn">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CANVAS FOR CONFETTI BURSTS -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <script src="app.js"></script>
+</body>
+</html>
